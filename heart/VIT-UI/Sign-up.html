@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Sign.css">
+    <title>Registration Page</title>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Registration</h1>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Gmail</label>
+                <input type="email" id="email" name="email" placeholder="Enter your Gmail" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+            </div>
+            <div class="form-group">
+                <label for="state">State</label>
+                <select id="state" name="state" required>
+                    <option value="">Select your state</option>
+                    <option value="state1">Madhya Pradesh</option>
+                    <option value="state2">Uttar pradesh</option>
+                    <option value="state3">Uttrakhand</option>
+                    <option value="state4">Rajasthan</option>
+                    <option value="state5">Jammu-Kashmir</option>
+                    <option value="state6">Maharashtra</option>
+                    <option value="state7">Chattisgarh</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" placeholder="Enter your city" required>
+            </div>
+            <!-- <a href="main">
+            <button type="submit" class="submit-btn">Submit</button>
+            </a> -->
+            <a href="main">
+                <button type="button" class="submit-btn">Submit</button>
+                </a>
+            <div id="All">
+            <a  href="Loginpage.html" style="color: black;">Already have an account !</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

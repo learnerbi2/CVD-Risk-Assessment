@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction - Home</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <header>
+        <h1>Heart Disease Prediction</h1>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="predict.html">Prediction</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+            <!-- Search Bar -->
+            <input type="text" id="searchBar" placeholder="Search..." onkeyup="searchFunction()">
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h2>Welcome to the Heart Disease Prediction System</h2>
+        <p>Analyze your health parameters and get an early risk assessment for heart diseases.</p>
+        <a href="predict.html" class="btn">Start Prediction</a>
+    </section>
+
+    <!-- Chatbot Button -->
+    <div class="chatbot-circle" onclick="toggleChat()">
+        <img src="chatbot-icon.png" alt="Chatbot">
+    </div>
+
+    <!-- Chatbot Popup -->
+    <div class="chatbot-popup" id="chatPopup">
+        <div class="chat-header">
+            <span>AI Chatbot</span>
+            <button onclick="toggleChat()">✖</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <p>👋 Hi! How can I assist you?</p>
+        </div>
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="sendMessage(event)">
+    </div>
+
+    <script src="home.js"></script>
+</body>
+</html>

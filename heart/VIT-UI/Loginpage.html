@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>Login Page</title>
+   
+</head>
+<script>
+  document.getElementById('emailForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      const emailInput = document.getElementById('email');
+      const feedback = document.getElementById('feedback');
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Regex for email validation
+
+      if (emailPattern.test(emailInput.value)) {
+          feedback.textContent = "Valid email address!";
+          feedback.className = "success";
+          feedback.hidden = false;
+      } else {
+          feedback.textContent = "Invalid email address. Please try again.";
+          feedback.className = "error";
+          feedback.hidden = false;
+      }
+  });
+</script>
+<body>
+    <div class="container">
+        <div class="welcome"><h2>Welcome</h2></div>
+        <div class="description">Login freely if you want to help for Heart diseases</div>
+        <div class="form-container">
+            <form>
+               
+                <input type="text" placeholder="Email address or phone number" required>
+                <input type="password" placeholder="Password" required>
+                
+                <a href="main">
+                <button onsubmit="return validateEmail(this)" type="button" class="login-button">Log in</button></a>
+                
+                
+                <a  href="#" style="color: black;">Forgotten password?</a>
+                <hr>
+                <a href="Sign-up">
+
+                 <button type="button" class="create-account-button">Create new account</button></a>
+        
+                 <!-- <div class="container">
+                <a class="create-account-button" type="button"  href="Sign-up.html">Don't have an account ? <br> SIGN-IN </a>
+                </div> -->
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" href="pridict.css">
+</head>
+<body>
+    <header>
+        <h1>Heart Disease Prediction</h1>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="predict.html">Prediction</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="registration.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="prediction-container">
+        <h2>Enter Your Health Details</h2>
+        <form id="predictionForm">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="bp">Blood Pressure (mmHg):</label>
+            <input type="number" id="bp" name="bp" required>
+
+            <label for="cholesterol">Cholesterol Level (mg/dL):</label>
+            <input type="number" id="cholesterol" name="cholesterol" required>
+
+            <label for="heartRate">Heart Rate (bpm):</label>
+            <input type="number" id="heartRate" name="heartRate" required>
+
+            <label for="glucose">Glucose Level (mg/dL):</label>
+            <input type="number" id="glucose" name="glucose" required>
+
+            <button type="submit">Check Prediction</button>
+        </form>
+
+        <p id="predictionResult" style="color: red; font-size: 18px; display: none;"></p>
+    </section>
+
+  
+
+    <script src="pridict.js"></script>
+</body>
+</html>
