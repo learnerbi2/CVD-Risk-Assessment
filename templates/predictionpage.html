@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Prediction API</title>
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 50%;
+    background: white;
+    padding: 20px;
+    margin: 50px auto;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+ 
+</style>
+</head>
+<body>
+<h1>Heart Disease Risk Assessment</h1> 
+<div>
+<form action ="{{url_for('predict')}}" method = "post">
+    <label for="name">What is your Name?</label><br>
+    <input type="text" name="name" placeholder="Enter name" required="required"/><br>
+    <label for="age">What is your age? </label><br>
+    <input type="number" name="age" placeholder="Enter Age" min="0" max="120" required="required"/><br>
+
+   <label for="sex">What is your Gender?</label><br>
+    <select id="gender" name="sex"> 
+        <option value="0">Female</option>
+        <option value="1">Male</option>
+        <option value="Other">Other</option>
+    </select><br>
+
+    <label for="smoke">Do you currently smoke cigarettes, e-cigarettes, or use tobacco products?</label><br>
+    <select id="smoke" name="smoking_status">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+    </select><br>
+
+    <label for="exercise">On average, how many days a week do you engage in at least 30 minutes of moderate-intensity physical activity (e.g., brisk walking, cycling)? (0-7 days)</label><br>
+    <input type="number" name="exercise_frequency" placeholder="Enter days (0-7)" min="0" max="7" required="required"/><br>
+
+    <label for="alcohol">How often do you consume alcoholic beverages?</label><br>
+    <select id="alcohol" name="alcohol_consumption">
+        <option value="0">Never</option>
+        <option value="1">Rarely</option>
+        <option value="2">Occasionally</option>
+        <option value="3">Frequently</option>
+        <option value="4">Daily</option>
+    </select><br>
+
+    <label for="diet">How would you describe your typical diet?</label><br>
+    <select id="diet" name="diet">
+        <option value="4">Healthy</option>
+        <option value="3">Mostly Healthy</option>
+        <option value="2">Mixed</option>
+        <option value="1">Unhealthy</option>
+        <option value="0">Mostly Unhealthy</option>
+    </select><br>
+
+    <label for="high_blood_pressure">Have you ever been diagnosed with high blood pressure?</label><br>
+    <select id="high_blood_pressure" name="high_blood_pressure">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+        <option value="-1">Don't Know</option>
+    </select><br>
+
+    <label for="high_cholesterol">Have you ever been diagnosed with high cholesterol?</label><br>
+    <select id="high_cholesterol" name="high_cholesterol">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+        <option value="-1">Don't Know</option>
+    </select><br>
+
+    <label for="diabetes">Have you ever been diagnosed with diabetes or pre-diabetes?</label><br>
+    <select id="diabetes" name="diabetes">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+        <option value="-1">Don't Know</option>
+    </select><br>
+
+    <label for="heart_conditions">Has a doctor ever told you you have any heart conditions (e.g., heart murmur, arrhythmia, coronary artery disease)?</label><br>
+    <select id="heart_conditions" name="heart_conditions">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+        <option value="-1">Don't Know</option>
+    </select><br>
+
+    <label for="family_history">Do you have a family history of heart disease (in a parent, sibling, or grandparent)?</label><br>
+    <select id="family_history" name="family_history_heart_disease">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+        <option value="-1">Don't Know</option>
+    </select><br>
+    <label for="shortness_of_breath">Do you Experience shortness in Breadth?</label>
+    <select id="breadth" name="shortness_of_breath">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+        <option value="-1">Don't Know</option>
+    </select><br>
+    <label for="palpitations">Do you Experience palpitations?</label>
+    <select id="palpitations" name="palpitations">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+    </select><br>
+
+    <button type="submit">Submit</button>
+</form>
+</div>
+</body>
+</html>

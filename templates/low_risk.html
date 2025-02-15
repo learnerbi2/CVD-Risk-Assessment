@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low Risk</title>
+    <style>
+        body { background-color: #ccffcc; text-align: center; font-family: Arial, sans-serif; }
+        .container { padding: 20px; }
+        h1 { color: green; }
+        img { width: 50%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Low Risk</h1>
+        <p>Your estimated risk of heart disease is <strong>{{ probability }}%</strong>.</p>
+        <p>✅ Maintain a healthy lifestyle!</p>
+        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph">
+        <br><br>
+        <div id="content" class="content-container">
+            <p>Dear {{name}}</p><br>
+            <h3>You’re doing a great job maintaining your heart health! <br>
+                Continue with your healthy habits to keep your risk low.<br>
+                Be Happy and Great!!</h3><br>
+            <p>Tips:<br>
+                Stay Active:<br>
+                Try to get moving for at least 30 minutes most days.<br>
+                walking, biking, or swimming are great!<br>
+                Don’t sit too long—take breaks to stretch or walk around now and then.<br>
+                <br>
+                Eat Smart:<br>
+                Fill your plate with fruits, veggies, whole grains, and lean proteins.<br>
+                Cut back on junk food, sugary drinks, and too much salt.<br>
+                <br>
+                Manage Stress:<br>
+                Find ways to relax, like deep breathing or spending time with loved ones.<br>
+                Make sure you’re getting enough sleep—7-9 hours a night helps you recharge.<br>
+                <br>
+                Keep an Eye on Your Health:<br>
+                Get regular check-ups to monitor your blood pressure and cholesterol.<br>
+                Drink water throughout the day to stay hydrated and support your heart.<br>
+            </p>
+        </div>
+        <a href="/">Go Back</a>
+    </div>
+</body>
+</html>

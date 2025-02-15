@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Risk</title>
+    <style>
+        body { background-color: #ffcccc; text-align: center; font-family: Arial, sans-serif; }
+        .container { padding: 20px; }
+        h1 { color: red; }
+        img { width: 50%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>Your estimated risk of heart disease is <strong>{{ probability }}%</strong>.</p>
+        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph">
+        <br><br>
+        <div id="content" class="content-container">
+            <p>Dear {{name}}</p><br>
+            <h3> "Your risk for cardiovascular disease is higher, but the good news is<br>
+                that there are many steps you can take to improve your health.<br> 
+                You are Important to us, so Take Care of your Heart."</h3><br>
+            <p>Tips:<br>
+
+                Get Moving (with Care):<br>
+                Aim for 30 minutes of activity most days. If you're not sure where to start,<br>
+                ask your doctor to help you come up with a plan that feels right for you.<br>
+                Find ways to relax your mind and body—stress management is key, so things<br> 
+                like meditation or just getting out in nature can help.<br>
+                
+                Make Healthier Food Choices:<br>
+                Focus on foods that are good for your heart, like vegetables, fruits, whole grains, <br>
+                and healthy fats (like olive oil or nuts).<br>
+                Cut back on processed foods, fried foods, and sugary snacks.<br>
+                If you drink alcohol, try to keep it in moderation—or think about cutting back.<br>
+                
+                Get the Right Medical Help:<br>
+                Work with your doctor to manage any conditions like high blood pressure or high cholesterol. <br>
+                Follow their advice about medications or other treatments.<br>
+                Don’t skip your health check-ups—regular visits can help catch any issues early. <br>
+                Quit Smoking <br>
+                If you smoke, quitting is one of the most important steps you can take for your heart.<br>
+                 Ask for help if you need it.<br>
+                there are plenty of resources to support you.<br>
+                Check your blood pressure and cholesterol regularly, and follow your doctor’s advice on what’s best for you.<br>
+                
+            </p>
+        </div>
+        <a href="/">Go Back</a>
+    </div>
+</body>
+</html>
