@@ -110,7 +110,7 @@ try:
     plt.bar(["Risk"], [probability], color=bar_color)
     plt.text(0, -10, risk_level, 
     ha='center', va='top', 
-    fontsize=15, fontweight='bold',
+    fontsize=10, fontweight='bold',
     color=bar_color
     ) 
 
