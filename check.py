@@ -55,7 +55,7 @@ try:
         "heart_conditions": "Do you have any heart conditions? (1 for Yes, 0 for No, -1 for Don't Know): ",
         "family_history_heart_disease": "Family history of heart disease? (1 for Yes, 0 for No, -1 for Don't Know): ",
         "shortness_of_breath": "Do you experience shortness of breath? (1 for Yes, 0 for No): ",
-        "palpitations": "Do you experience palpitations? (1 for Yes, 0 for No): "
+        "palpitations": "Do you experience that your heart is thumping, racing or fluttering? (1 for Yes, 0 for No): "
     }
     
     for key, prompt in input_prompts.items():
