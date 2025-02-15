@@ -1,14 +1,17 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import pickle
 from sklearn.preprocessing import StandardScaler
-
+from sklearn.impute import SimpleImputer
+import os
 try:
-    dataset_path = "heartdiseasepredicModify/modified_heart_disease_data.csv"
+    dataset_path = "modified_heart_disease_data.csv"
+
+    if not os.path.exists(dataset_path):
+        raise FileNotFoundError(f"Dataset not found at {dataset_path}")
     columns = [
         'age', 'sex', 'smoking_status', 'exercise_frequency', 'alcohol_consumption', 'diet', 'high_blood_pressure',
         'high_cholesterol', 'diabetes', 'heart_conditions', 'family_history_heart_disease', 'shortness_of_breath', 'palpitations', 'target'
@@ -17,13 +20,25 @@ try:
     
     # Ensure data types are correct
     data = data.apply(pd.to_numeric, errors='coerce')
-    
-    data.replace(-1, np.nan, inplace=True)
-    data.dropna(inplace=True) 
-    
-    # Prepare data for training
+
+    if data.empty:
+        raise ValueError("Dataset is empty or not loaded correctly!")
+
+    # **Handle missing values (Imputation)**
+    imputer = SimpleImputer(strategy="mean")  # Options: "mean", "median", "most_frequent"
+    data.iloc[:, :-1] = imputer.fit_transform(data.iloc[:, :-1])  # Exclude target column
+
+    # **Prepare Data (Ensure X is defined)**
+    if 'target' not in data.columns:
+        raise ValueError("Target column is missing in dataset!")
+
     X = data.drop('target', axis=1)
-    y = data['target'].apply(lambda x: 1 if x > 0 else 0)
+    y = data['target'].apply(lambda x: 1 if x > 0 else 0)  # Convert target to binary
+
+    # **Check if X is empty**
+    if X.empty:
+        raise ValueError("Feature set X is empty!")
+
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X) 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -97,7 +112,7 @@ try:
         bar_color = 'red'
 
         print("\n⚠ High risk! Consult a doctor immediately.")
-    elif 40 < probability <= 70:
+    elif 50 < probability <= 70:
         risk_level = "Moderate Risk"
         bar_color = 'orange'
         print("\n⚠ Moderate risk! Consider lifestyle changes and consult a doctor.")
@@ -113,17 +128,6 @@ try:
     fontsize=10, fontweight='bold',
     color=bar_color
     ) 
-
-    # user_data_values = list(user_data.values())
-    # feature_names = list(user_data.keys())
-    
-    # plt.figure(figsize=(10, 6))
-    # plt.bar(feature_names, user_data_values, color='orange')
-    # plt.ylabel('Value')
-    # plt.title('User Input Features')
-    # plt.xticks(rotation=45, ha='right')
-    # plt.tight_layout()
-    # plt.show()
     # if probability > 40:
     #     print("\n💡 Health Tips:")
     #     print("- 🥗 Eat a balanced diet.")
@@ -133,6 +137,8 @@ try:
     #     print("- ⚖ Maintain a healthy weight.")
 except Exception as e:
     print(f"\n❌ Error: {e}")
-
-pickle.dump(model,open("Modifiedmodel.pkl","wb"))
-pickle.dump(scaler, open("scaler.pkl", "wb"))
+try:
+   pickle.dump(model,open("Modifiedmodel.pkl","wb"))
+   pickle.dump(scaler, open("scaler.pkl", "wb"))
+except Exception as e:
+    print(f"❌ Error saving model or scaler: {e}")

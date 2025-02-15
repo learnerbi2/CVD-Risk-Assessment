@@ -8,7 +8,7 @@ import pickle
 
 # dataset add kiya
 try:
-    dataset_path = "heartdiseasepredicModify/modified_heart_disease_data.csv"
+    dataset_path = r"heartdiseasepredicModify\new_modified_heart_disease_data.csv"
     columns = [
         'age', 'sex', 'smoking_status', 'exercise_frequency', 'alcohol_consumption', 'diet', 'high_blood_pressure',
         'high_cholesterol', 'diabetes', 'heart_conditions', 'family_history_heart_disease', 'shortness_of_breath', 'palpitations', 'target'

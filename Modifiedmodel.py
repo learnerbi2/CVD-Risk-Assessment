@@ -112,7 +112,7 @@ try:
         bar_color = 'red'
 
         print("\n⚠ High risk! Consult a doctor immediately.")
-    elif 40 < probability <= 70:
+    elif 50 < probability <= 70:
         risk_level = "Moderate Risk"
         bar_color = 'orange'
         print("\n⚠ Moderate risk! Consider lifestyle changes and consult a doctor.")

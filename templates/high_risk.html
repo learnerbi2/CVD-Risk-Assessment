@@ -5,23 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>High Risk</title>
     <style>
-        body { background-color: #ffcccc; text-align: center; font-family: Arial, sans-serif; }
-        .container { padding: 20px; }
-        h1 { color: red; }
-        img { width: 50%; }
+        body { 
+             background-color: #ffcccc; 
+             text-align: center;
+             font-family: Arial, sans-serif;
+             }
+
+        .container { 
+            padding: 10px;
+                    }
+        h1 { 
+            color: red;
+           }
+        img {
+             width: 50%; 
+            }
+        .percentage{
+
+        }
+        .graph{
+            flex: 0 0 40%; 
+            margin-right: 20px; 
+        }
+        #content{
+
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <p>Your estimated risk of heart disease is <strong>{{ probability }}%</strong>.</p>
-        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph">
-        <br><br>
+        <div class = "percentage"><p><strong>{{ probability }}%</strong></p><div>
+       <div class = "graph" > <img src="{{ graph_url }}" alt="Heart Disease Risk Graph"><div>
+        <br>
         <div id="content" class="content-container">
-            <p>Dear {{name}}</p><br>
+            <p>Dear {{name}} ,</p><br>
             <h3> "Your risk for cardiovascular disease is higher, but the good news is<br>
                 that there are many steps you can take to improve your health.<br> 
                 You are Important to us, so Take Care of your Heart."</h3><br>
-            <p>Tips:<br>
+            
+                <p>Tips:<br>
 
                 Get Moving (with Care):<br>
                 Aim for 30 minutes of activity most days. If you're not sure where to start,<br>

@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import pickle
 from flask import Flask, render_template, request, jsonify
 import io
@@ -17,7 +16,7 @@ try:
     scaler_path = "scaler.pkl"
 #missing file error handle
     if not os.path.exists(model_path) or not os.path.exists(scaler_path):
-        raise FileNotFoundError("❌ Model or Scaler file is missing!")
+        raise FileNotFoundError(" Model or Scaler file is missing!")
 
     model = pickle.load(open(model_path, "rb"))
     scaler = pickle.load(open(scaler_path, "rb"))
@@ -69,7 +68,7 @@ def predict():
         if probability > 70:
             graph_color = 'red'
             risk_level = "High Risk"
-        elif 40 < probability <= 70:
+        elif 50 < probability <= 70:
             graph_color = 'orange'
             risk_level = "Moderate Risk"
         else:
@@ -78,7 +77,7 @@ def predict():
 
         # graph generate
         try:
-            plt.figure(figsize=(7, 7))
+            plt.figure(figsize=(5, 5))
             plt.bar(["Heart Disease Risk"], [probability], color=graph_color)
             plt.ylim([0, 100])
             plt.ylabel('Risk Percentage')
@@ -100,7 +99,7 @@ def predict():
         #render in three pages
         if probability > 70:
             return render_template('high_risk.html', name=user_name, probability=probability, graph_url=graph_url)
-        elif 40 < probability <= 70:
+        elif 50 < probability <= 70:
             return render_template('moderate_risk.html', name=user_name, probability=probability, graph_url=graph_url)
         else:
             return render_template('low_risk.html', name=user_name, probability=probability, graph_url=graph_url)

@@ -5,44 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Low Risk</title>
     <style>
-        body { background-color: #ccffcc; text-align: center; font-family: Arial, sans-serif; }
+        body { background-color: #ccffcc; 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            justify-content: center;
+            align-items:baseline;
+        }
         .container { padding: 20px; }
         h1 { color: green; }
-        img { width: 50%; }
+        h3{
+         color:rgb(220, 20, 153);
+         font-style:italic;
+        }
+        img { width: 30%; }
+        .content-container{
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9; 
+        }
+        #content{
+            align-self: start;
+            align-content:center ;
+        }
+        .chartcontainer{
+          flex-wrap: nowrap;
+        }
+        #name{
+            color: crimson;
+            font-style:italic;
+        }
+        #tips{
+            color:rgb(154, 23, 156)
+        }
+        #back{
+            margin-left: 280px;
+            align-self: center;
+            width: 80px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #c310e2; 
+            color:rgb(220, 20, 153);
+        } 
+        #probability{
+            font-size: 120px;
+        }  
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>✅ Low Risk</h1>
-        <p>Your estimated risk of heart disease is <strong>{{ probability }}%</strong>.</p>
-        <p>✅ Maintain a healthy lifestyle!</p>
-        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph">
+       <div align="left" class="chart-container"> <h1>✅ Low Risk</h1>
+        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph"></div>
+        <div align="right" class="probability"><p><strong>{{ probability }}%</strong>.</p></div>  
         <br><br>
-        <div id="content" class="content-container">
-            <p>Dear {{name}}</p><br>
-            <h3>You’re doing a great job maintaining your heart health! <br>
-                Continue with your healthy habits to keep your risk low.<br>
-                Be Happy and Great!!</h3><br>
-            <p>Tips:<br>
-                Stay Active:<br>
-                Try to get moving for at least 30 minutes most days.<br>
-                walking, biking, or swimming are great!<br>
-                Don’t sit too long—take breaks to stretch or walk around now and then.<br>
+        <div align="left" id="content" class="content-container">
+            <h3 id="name">Dear {{name}},</h3>
+            <h3>You’re doing a great job maintaining your heart health! 
+                Continue with your healthy habits to keep your risk low.
+                Be Happy and Great!! 😇</h3><br>
+            <p id="ideas"><p id="tips">Tips:</p>
+                Stay Active:😌
+                Try to get moving for at least 30 minutes most days.🏃
+                walking, biking, or swimming are great!🧞‍♂️
+                Don’t sit too long—take breaks to stretch or walk around now and then.🙆‍♂️
                 <br>
-                Eat Smart:<br>
-                Fill your plate with fruits, veggies, whole grains, and lean proteins.<br>
-                Cut back on junk food, sugary drinks, and too much salt.<br>
+                Eat Smart:😎🍎
+                Fill your plate with fruits, veggies, whole grains, and lean proteins.🥕🍉
+                Cut back on junk food, sugary drinks, and too much salt.🧂
                 <br>
-                Manage Stress:<br>
-                Find ways to relax, like deep breathing or spending time with loved ones.<br>
-                Make sure you’re getting enough sleep—7-9 hours a night helps you recharge.<br>
+                Manage Stress:😅
+                Find ways to relax, 💆‍♂️like deep breathing or spending time with loved ones.👨‍❤️‍👨🧘‍♀️
+                Make sure you’re getting enough sleep—7-9 hours a night helps you recharge.😴
                 <br>
-                Keep an Eye on Your Health:<br>
-                Get regular check-ups to monitor your blood pressure and cholesterol.<br>
-                Drink water throughout the day to stay hydrated and support your heart.<br>
+                Keep an Eye on Your Health:🍎👩‍⚕
+                Get regular check-ups to monitor your blood pressure and cholesterol.🏃
+                Drink water throughout the day to stay hydrated and support your heart.💕
             </p>
-        </div>
-        <a href="/">Go Back</a>
-    </div>
+            
+             <div align="center" id="back">
+          <a href="/">Go Back</a>
+            </div>
+            </div>
+      </div>
+      </div>
+      <div><h1>Thankyou For The Assessment<br><h1></div>
 </body>
 </html>
