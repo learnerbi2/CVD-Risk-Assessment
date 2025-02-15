@@ -15,7 +15,7 @@ app = Flask(__name__)
 try:
     model_path = "Modifiedmodel.pkl"
     scaler_path = "scaler.pkl"
-
+#missing file error handle
     if not os.path.exists(model_path) or not os.path.exists(scaler_path):
         raise FileNotFoundError("❌ Model or Scaler file is missing!")
 
@@ -25,6 +25,8 @@ try:
 except Exception as e:
     print(f"Error loading model/scaler: {e}")
     exit() 
+
+# column values
 feature_columns = [
     'age', 'sex', 'smoking_status', 'exercise_frequency', 'alcohol_consumption', 'diet',
     'high_blood_pressure', 'high_cholesterol', 'diabetes', 'heart_conditions',
@@ -74,9 +76,7 @@ def predict():
             graph_color = 'green'
             risk_level = "Low Risk"
 
-        # -------------------------------
-        # 📊 Generate Bar Graph
-        # -------------------------------
+        # graph generate
         try:
             plt.figure(figsize=(7, 7))
             plt.bar(["Heart Disease Risk"], [probability], color=graph_color)
@@ -85,21 +85,19 @@ def predict():
             plt.title('Heart Disease Prediction')
             plt.text(0, -10, risk_level, ha='center', va='top', fontsize=15, fontweight='bold', color=graph_color)
 
-            # Convert plot to image
+        #convert graph to image and save
             img = io.BytesIO()
             plt.savefig(img, format='png')
             img.seek(0)
             plt.close()
 
-            # Encode image
+        # Encode image
             graph_url = "data:image/png;base64," + base64.b64encode(img.getvalue()).decode()
 
         except Exception as e:
-            raise RuntimeError(f"❌ Error generating graph: {e}")
+            raise RuntimeError(f"Error generating graph: {e}")
 
-        # -------------------------------
-        # 🔀 Render Appropriate Template
-        # -------------------------------
+        #render in three pages
         if probability > 70:
             return render_template('high_risk.html', name=user_name, probability=probability, graph_url=graph_url)
         elif 40 < probability <= 70:
@@ -109,8 +107,10 @@ def predict():
 
     except Exception as e:
         error_message = f"❌ Error: {str(e)}\n{traceback.format_exc()}"
-        print(error_message)  # Log full traceback for debugging
-        return jsonify({"error": str(e)}), 400  # Return JSON error response
+       # Log full traceback for debugging
+        print(error_message)  
+       # Return JSON error response
+        return jsonify({"error": str(e)}), 400 
 
 if __name__ == "__main__":
     app.run(debug=True)
