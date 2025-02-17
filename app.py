@@ -7,25 +7,35 @@ import matplotlib
 import matplotlib.pyplot as plt
 import traceback
 import os
+
 # Fix GUI issue for servers
-matplotlib.use('Agg')  
+matplotlib.use('Agg')
 
 app = Flask(__name__)
-try:
-    model_path = "Modifiedmodel.pkl"
-    scaler_path = "scaler.pkl"
-#missing file error handle
-    if not os.path.exists(model_path) or not os.path.exists(scaler_path):
-        raise FileNotFoundError(" Model or Scaler file is missing!")
 
-    model = pickle.load(open(model_path, "rb"))
-    scaler = pickle.load(open(scaler_path, "rb"))
+# Load Model and Scaler with Better Handling
+model_path = "Modifiedmodel.pkl"
+scaler_path = "scaler.pkl"
 
-except Exception as e:
-    print(f"Error loading model/scaler: {e}")
-    exit() 
+def load_pickle_file(file_path):
+    """Load pickle files safely."""
+    if not os.path.exists(file_path):
+        return None
+    try:
+        with open(file_path, "rb") as f:
+            return pickle.load(f)
+    except Exception as e:
+        print(f"❌ Error loading {file_path}: {e}")
+        return None
 
-# column values
+model = load_pickle_file(model_path)
+scaler = load_pickle_file(scaler_path)
+
+if not model or not scaler:
+    print("❌ Model or Scaler is missing/corrupted! Ensure files exist.")
+    exit()  # Stop execution if critical files are missing
+
+# Feature Columns
 feature_columns = [
     'age', 'sex', 'smoking_status', 'exercise_frequency', 'alcohol_consumption', 'diet',
     'high_blood_pressure', 'high_cholesterol', 'diabetes', 'heart_conditions',
@@ -36,80 +46,77 @@ feature_columns = [
 def index():
     return render_template('predictionpage.html')
 
+def determine_risk_level(probability):
+    """Determine risk category and graph color based on probability."""
+    if probability > 70:
+        return "High Risk", "red", "high_risk.html"
+    elif 50 < probability <= 70:
+        return "Moderate Risk", "orange", "moderate_risk.html"
+    else:
+        return "Low Risk", "green", "low_risk.html"
+
+def generate_graph(probability, risk_level, graph_color):
+    """Generate and return the graph URL."""
+    try:
+        plt.figure(figsize=(5, 5))
+        plt.bar(["Heart Disease Risk"], [probability], color=graph_color)
+        plt.ylim([0, 100])
+        plt.ylabel('Risk Percentage')
+        plt.title('Heart Disease Prediction')
+        plt.text(0, -10, risk_level, ha='center', va='top', fontsize=15, fontweight='bold', color=graph_color)
+        plt.grid(True, linestyle="--", alpha=0.6)
+
+        # Convert to image and encode
+        img = io.BytesIO()
+        plt.savefig(img, format='png')
+        img.seek(0)
+        plt.close()
+        return "data:image/png;base64," + base64.b64encode(img.getvalue()).decode()
+    
+    except Exception as e:
+        print(f"Error generating graph: {e}")
+        return None
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Ensure required fields exist in form data
+        # Validate Input Fields
         missing_fields = [col for col in feature_columns if col not in request.form]
         if missing_fields:
-            raise ValueError(f" Missing form fields: {', '.join(missing_fields)}")
+            return jsonify({"error": f"Missing form fields: {', '.join(missing_fields)}"}), 400
 
         user_name = request.form.get('name', 'User')
 
-# Collect user inputs from column
+        # Parse and validate input values
         user_data = {}
         for col in feature_columns:
             try:
                 user_data[col] = int(request.form[col])
             except ValueError:
-                raise ValueError(f" Invalid input for {col}. Please enter a valid number.")
+                return jsonify({"error": f"Invalid input for {col}. Enter a valid number."}), 400
 
-# Convert to DataFrame
+        # Convert to DataFrame & Scale
         user_df = pd.DataFrame([user_data], columns=feature_columns)
-
-# Apply Scaler
         user_scaled = scaler.transform(user_df)
 
-# Predict probability bnaya
-        probability = model.predict_proba(user_scaled)[0][1] * 100
-        probability = round(probability, 2)  # Round to 2 decimal places
+        # Predict Probability
+        probability = round(model.predict_proba(user_scaled)[0][1] * 100, 2)
 
-# Risk check
-        if probability > 70:
-            graph_color = 'red'
-            risk_level = "High Risk"
-        elif 50 < probability <= 70:
-            graph_color = 'orange'
-            risk_level = "Moderate Risk"
-        else:
-            graph_color = 'green'
-            risk_level = "Low Risk"
+        # Determine Risk Level
+        risk_level, graph_color, template = determine_risk_level(probability)
 
-        # graph generate
-        try:
-            plt.figure(figsize=(5, 5))
-            plt.bar(["Heart Disease Risk"], [probability], color=graph_color)
-            plt.ylim([0, 100])
-            plt.ylabel('Risk Percentage')
-            plt.title('Heart Disease Prediction')
-            plt.text(0, -10, risk_level, ha='center', va='top', fontsize=15, fontweight='bold', color=graph_color)
+        # Generate Graph
+        graph_url = generate_graph(probability, risk_level, graph_color)
+        if not graph_url:
+            return jsonify({"error": "Failed to generate graph."}), 500
 
-        #convert graph to image and save
-            img = io.BytesIO()
-            plt.savefig(img, format='png')
-            img.seek(0)
-            plt.close()
-
-        # Encode image
-            graph_url = "data:image/png;base64," + base64.b64encode(img.getvalue()).decode()
-
-        except Exception as e:
-            raise RuntimeError(f"Error generating graph: {e}")
-
-        #render in three pages
-        if probability > 70:
-            return render_template('high_risk.html', name=user_name, probability=probability, graph_url=graph_url)
-        elif 50 < probability <= 70:
-            return render_template('moderate_risk.html', name=user_name, probability=probability, graph_url=graph_url)
-        else:
-            return render_template('low_risk.html', name=user_name, probability=probability, graph_url=graph_url)
+        # Render Template
+        return render_template(template, name=user_name, probability=probability, graph_url=graph_url)
 
     except Exception as e:
         error_message = f"❌ Error: {str(e)}\n{traceback.format_exc()}"
-       # Log full traceback for debugging
-        print(error_message)  
-       # Return JSON error response
-        return jsonify({"error": str(e)}), 400 
+        print(error_message)
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -11,7 +11,8 @@
 }
 
 .container {
-    width: 50%;
+    width: 90%;
+    max-width: 600px;
     background: white;
     padding: 20px;
     margin: 50px auto;
@@ -31,19 +32,17 @@ label {
 }
 
 input, select {
-    width: 80%;
-    padding: 8px;
+    width: 100%;
+    padding: 10px;
     margin-bottom: 15px;
-    margin-right: 50px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 button {
-    width: 50%;
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     background-color: #007BFF;
-    align-content: center;
     color: white;
     border: none;
     border-radius: 4px;
@@ -54,100 +53,116 @@ button {
 button:hover {
     background-color: #0056b3;
 }
- 
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 </style>
 </head>
 <body>
-<h1>Heart Disease Risk Assessment</h1> 
-<div>
-<form action ="{{url_for('predict')}}" method = "post">
-    <label for="name">What is your Name?</label><br>
-    <input type="text" name="name" placeholder="Enter name" required="required"/><br>
-    <label for="age">What is your age? </label><br>
-    <input type="number" name="age" placeholder="Enter Age" min="0" max="120" required="required"/><br>
 
-   <label for="sex">What is your Gender?</label><br>
-    <select id="gender" name="sex"> 
+<div class="container">
+<h1>Heart Disease Risk Assessment</h1> 
+<form action ="{{url_for('predict')}}" method = "post">
+    
+    <label for="name">What is your Name?</label>
+    <input type="text" name="name" placeholder="Enter name" required/>
+
+    <label for="age">What is your age?</label>
+    <input type="number" name="age" placeholder="Enter Age" min="0" max="120" required/>
+
+    <label for="sex">What is your Gender?</label>
+    <select id="gender" name="sex" required> 
         <option value="0">Female</option>
         <option value="1">Male</option>
-        <option value="Other">Other</option>
-    </select><br>
+    </select>
 
-    <label for="smoke">Do you currently smoke cigarettes, e-cigarettes, or use tobacco products?</label><br>
-    <select id="smoke" name="smoking_status">
+    <label for="smoke">Do you currently smoke cigarettes, e-cigarettes, or use tobacco products?</label>
+    <select id="smoke" name="smoking_status" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
-    </select><br>
+    </select>
 
-    <label for="exercise">On average, how many days a week do you engage in at least 30 minutes of moderate-intensity physical activity (e.g., brisk walking, cycling)? (0-7 days)</label><br>
-    <input type="number" name="exercise_frequency" placeholder="Enter days (0-7)" min="0" max="7" required="required"/><br>
+    <label for="exercise">How many days a week do you engage in at least 30 minutes of moderate-intensity physical activity?</label>
+    <input type="number" name="exercise_frequency" placeholder="Enter days (0-7)" min="0" max="7" required/>
 
-    <label for="alcohol">How often do you consume alcoholic beverages?</label><br>
-    <select id="alcohol" name="alcohol_consumption">
+    <label for="alcohol">How often do you consume alcoholic beverages?</label>
+    <select id="alcohol" name="alcohol_consumption" required>
         <option value="0">Never</option>
         <option value="1">Rarely</option>
         <option value="2">Occasionally</option>
         <option value="3">Frequently</option>
         <option value="4">Daily</option>
-    </select><br>
+    </select>
 
-    <label for="diet">How would you describe your typical diet?</label><br>
-    <select id="diet" name="diet">
+    <label for="diet">How would you describe your typical diet?</label>
+    <select id="diet" name="diet" required>
         <option value="4">Healthy</option>
         <option value="3">Mostly Healthy</option>
         <option value="2">Mixed</option>
         <option value="1">Unhealthy</option>
         <option value="0">Mostly Unhealthy</option>
-    </select><br>
+    </select>
 
-    <label for="high_blood_pressure">Have you ever been diagnosed with high blood pressure?</label><br>
-    <select id="high_blood_pressure" name="high_blood_pressure">
+    <label for="high_blood_pressure">Have you ever been diagnosed with high blood pressure?</label>
+    <select id="high_blood_pressure" name="high_blood_pressure" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
         <option value="-1">Don't Know</option>
-    </select><br>
+    </select>
 
-    <label for="high_cholesterol">Have you ever been diagnosed with high cholesterol?</label><br>
-    <select id="high_cholesterol" name="high_cholesterol">
+    <label for="high_cholesterol">Have you ever been diagnosed with high cholesterol?</label>
+    <select id="high_cholesterol" name="high_cholesterol" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
         <option value="-1">Don't Know</option>
-    </select><br>
+    </select>
 
-    <label for="diabetes">Have you ever been diagnosed with diabetes or pre-diabetes?</label><br>
-    <select id="diabetes" name="diabetes">
+    <label for="diabetes">Have you ever been diagnosed with diabetes or pre-diabetes?</label>
+    <select id="diabetes" name="diabetes" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
         <option value="-1">Don't Know</option>
-    </select><br>
+    </select>
 
-    <label for="heart_conditions">Has a doctor ever told you you have any heart conditions (e.g., heart murmur, arrhythmia, coronary artery disease)?</label><br>
-    <select id="heart_conditions" name="heart_conditions">
+    <label for="heart_conditions">Has a doctor ever told you you have any heart conditions?</label>
+    <select id="heart_conditions" name="heart_conditions" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
         <option value="-1">Don't Know</option>
-    </select><br>
+    </select>
 
-    <label for="family_history">Do you have a family history of heart disease (in a parent, sibling, or grandparent)?</label><br>
-    <select id="family_history" name="family_history_heart_disease">
+    <label for="family_history">Do you have a family history of heart disease?</label>
+    <select id="family_history" name="family_history_heart_disease" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
         <option value="-1">Don't Know</option>
-    </select><br>
-    <label for="shortness_of_breath">Do you Experience shortness in Breadth?</label>
-    <select id="breadth" name="shortness_of_breath">
+    </select>
+
+    <label for="shortness_of_breath">Do you experience shortness of breath?</label>
+    <select id="shortness_of_breath" name="shortness_of_breath" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
         <option value="-1">Don't Know</option>
-    </select><br>
-    <label for="palpitations">Do you experience that your heart is thumping, racing or fluttering?</label>
-    <select id="palpitations" name="palpitations">
+    </select>
+
+    <label for="palpitations">Do you experience heart palpitations?</label>
+    <select id="palpitations" name="palpitations" required>
         <option value="1">Yes</option>
         <option value="0">No</option>
-    </select><br>
+    </select>
 
-    <button type="submit">Submit</button>
+    <button type="submit" id="submit-btn">Submit</button>
 </form>
 </div>
+
+<script>
+    document.querySelector("form").addEventListener("submit", function() {
+        document.getElementById("submit-btn").disabled = true;
+    });
+</script>
+
 </body>
 </html>

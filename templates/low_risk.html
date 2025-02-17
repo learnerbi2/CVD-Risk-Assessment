@@ -5,89 +5,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Low Risk</title>
     <style>
-        body { background-color: #ccffcc; 
-            text-align: center; 
-            font-family: Arial, sans-serif; 
-            justify-content: center;
-            align-items:baseline;
+        /* Global Styles */
+        body { 
+            background-color: #ccffcc; 
+            font-family: 'Calibri', sans-serif;
+            font-style: italic;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
-        .container { padding: 20px; }
-        h1 { color: green; }
-        h3{
-         color:rgb(220, 20, 153);
-         font-style:italic;
+
+        /* Header */
+        h1 {
+            color: green;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
         }
-        img { width: 30%; }
-        .content-container{
+
+        /* Chart & Probability Section */
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px 0;
+        }
+
+        .chart-container img {
+            width: 40%;
+            max-width: 400px;
+            border-radius: 10px;
+        }
+
+        .probability {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ef1179;
+            text-align: right;
+            width: 40%;
+        }
+
+        /* Content Container */
+        .content-container {
+            width: 90%;
+            max-width: 1600px;
             padding: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: #f9f9f9; 
+            text-align: left;
+            margin-top: 20px;
         }
-        #content{
-            align-self: start;
-            align-content:center ;
+
+        h3 {
+            color: rgb(220, 20, 153);
+            font-style: italic;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
         }
-        .chartcontainer{
-          flex-wrap: nowrap;
+
+        #name {
+            color: #DC1499;
+            font-style: italic;
+            font-size: 1.5rem;
         }
-        #name{
-            color: crimson;
-            font-style:italic;
+        #tips {
+            color: rgb(154, 23, 156);
+            font-size: 1.5rem;
+            font-style: italic;
         }
-        #tips{
-            color:rgb(154, 23, 156)
+
+        .tips-list {
+            line-height: 1.6;
+            margin-top: 10px;
         }
-        #back{
-            margin-left: 280px;
-            align-self: center;
-            width: 80px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #c310e2; 
-            color:rgb(220, 20, 153);
-        } 
-        #probability{
-            font-size: 120px;
-        }  
+
+        /* Back Button */
+        #back a {
+            display: inline-block;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background-color: #c310e2;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.3s ease-in-out;
+        }
+
+        #back a:hover {
+            background-color: #a00dbf;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chart-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .chart-container img, .probability {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-       <div align="left" class="chart-container"> <h1>✅ Low Risk</h1>
-        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph"></div>
-        <div align="right" class="probability"><p><strong>{{ probability }}%</strong>.</p></div>  
-        <br><br>
-        <div align="left" id="content" class="content-container">
-            <h3 id="name">Dear {{name}},</h3>
-            <h3>You’re doing a great job maintaining your heart health! 
-                Continue with your healthy habits to keep your risk low.
-                Be Happy and Great!! 😇</h3><br>
-            <p id="ideas"><p id="tips">Tips:</p>
-                Stay Active:😌
-                Try to get moving for at least 30 minutes most days.🏃
-                walking, biking, or swimming are great!🧞‍♂️
-                Don’t sit too long—take breaks to stretch or walk around now and then.🙆‍♂️
-                <br>
-                Eat Smart:😎🍎
-                Fill your plate with fruits, veggies, whole grains, and lean proteins.🥕🍉
-                Cut back on junk food, sugary drinks, and too much salt.🧂
-                <br>
-                Manage Stress:😅
-                Find ways to relax, 💆‍♂️like deep breathing or spending time with loved ones.👨‍❤️‍👨🧘‍♀️
-                Make sure you’re getting enough sleep—7-9 hours a night helps you recharge.😴
-                <br>
-                Keep an Eye on Your Health:🍎👩‍⚕
-                Get regular check-ups to monitor your blood pressure and cholesterol.🏃
-                Drink water throughout the day to stay hydrated and support your heart.💕
-            </p>
-            
-             <div align="center" id="back">
-          <a href="/">Go Back</a>
-            </div>
-            </div>
-      </div>
-      </div>
-      <div><h1>Thankyou For The Assessment<br><h1></div>
+
+    <h1>✅ Low Risk</h1>
+
+    <!-- Chart & Probability Section -->
+    <div class="chart-container"> 
+        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph">
+        <div class="probability">
+            <p><strong>{{ probability }}%</strong></p>
+        </div>
+    </div>  
+
+    <!-- Content Section -->
+    <div class="content-container">
+        <h3 id="name">Dear {{name}},</h3>
+        <h3>
+            You’re doing a great job maintaining your heart health! 
+            Continue with your healthy habits to keep your risk low.
+            Be Happy and Great!! 😇
+        </h3>
+
+        <p><strong id="tips">Tips:</strong></p>
+        <ul class="tips-list">
+            <li><strong>Stay Active:😌</strong> Try to move for at least 30 minutes most days. Walking, biking, or swimming are great! 🏃 Don’t sit too long—take breaks to stretch or walk around. 🙆‍♂️</li>
+            <li><strong>Eat Smart:😎🍎</strong> Fill your plate with fruits, veggies, whole grains, and lean proteins. 🥕🍉 Cut back on junk food, sugary drinks, and too much salt. 🧂</li>
+            <li><strong>Manage Stress:😅</strong> Find ways to relax, 💆‍♂️like deep breathing or spending time with loved ones.👨‍❤️‍👨🧘‍♀️ Get enough sleep—7-9 hours a night helps you recharge. 😴</li>
+            <li><strong>Keep an Eye on Your Health: 🍎👩‍⚕</strong> Get regular check-ups to monitor your blood pressure and cholesterol. 🏃 Stay hydrated by drinking enough water throughout the day. 💕</li>
+        </ul>
+
+        <div id="back">
+            <a href="/">Go Back</a>
+        </div>
+    </div>
+
+    <h1 class="footer">Thank you for the assessment</h1>
+
 </body>
 </html>

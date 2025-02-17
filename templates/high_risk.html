@@ -6,70 +6,151 @@
     <title>High Risk</title>
     <style>
         body { 
-             background-color: #ffcccc; 
-             text-align: center;
-             font-family: Arial, sans-serif;
-             }
+            background-color: #ffcccc; 
+            font-family: 'Calibri', sans-serif;
+            font-style: italic;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
 
-        .container { 
-            padding: 10px;
-                    }
-        h1 { 
+        h1 {
             color: red;
-           }
-        img {
-             width: 50%; 
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px 0;
+        }
+
+        .chart-container img {
+            width: 40%;
+            max-width: 400px;
+            border-radius: 10px;
+        }
+
+        .probability {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #d40000;
+            text-align: right;
+            width: 40%;
+        }
+
+        .content-container {
+            width: 90%;
+            max-width: 1600px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9; 
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: rgb(220, 20, 153);
+            font-style: italic;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        #name {
+            color: #D40000;
+            font-style: italic;
+            font-size: 1.5rem;
+        }
+        #tips {
+            color: rgb(154, 23, 56);
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        .tips-list {
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        #back a {
+            display: inline-block;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background-color: #c310e2;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.3s ease-in-out;
+        }
+        #back a:hover {
+            background-color: #a00dbf;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                flex-direction: column;
+                text-align: center;
             }
-        .percentage{
 
+            .chart-container img, .probability {
+                width: 100%;
+                text-align: center;
+            }
         }
-        .graph{
-            flex: 0 0 40%; 
-            margin-right: 20px; 
-        }
-        #content{
-
-        }
+        
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class = "percentage"><p><strong>{{ probability }}%</strong></p><div>
-       <div class = "graph" > <img src="{{ graph_url }}" alt="Heart Disease Risk Graph"><div>
-        <br>
-        <div id="content" class="content-container">
-            <p>Dear {{name}} ,</p><br>
-            <h3> "Your risk for cardiovascular disease is higher, but the good news is<br>
-                that there are many steps you can take to improve your health.<br> 
-                You are Important to us, so Take Care of your Heart."</h3><br>
-            
-                <p>Tips:<br>
 
-                Get Moving (with Care):<br>
-                Aim for 30 minutes of activity most days. If you're not sure where to start,<br>
-                ask your doctor to help you come up with a plan that feels right for you.<br>
-                Find ways to relax your mind and body—stress management is key, so things<br> 
-                like meditation or just getting out in nature can help.<br>
-                
-                Make Healthier Food Choices:<br>
-                Focus on foods that are good for your heart, like vegetables, fruits, whole grains, <br>
-                and healthy fats (like olive oil or nuts).<br>
-                Cut back on processed foods, fried foods, and sugary snacks.<br>
-                If you drink alcohol, try to keep it in moderation—or think about cutting back.<br>
-                
-                Get the Right Medical Help:<br>
-                Work with your doctor to manage any conditions like high blood pressure or high cholesterol. <br>
-                Follow their advice about medications or other treatments.<br>
-                Don’t skip your health check-ups—regular visits can help catch any issues early. <br>
-                Quit Smoking <br>
-                If you smoke, quitting is one of the most important steps you can take for your heart.<br>
-                 Ask for help if you need it.<br>
-                there are plenty of resources to support you.<br>
-                Check your blood pressure and cholesterol regularly, and follow your doctor’s advice on what’s best for you.<br>
-                
-            </p>
+    <h1>⛑️High Risk</h1>
+
+    <div class="chart-container"> 
+        <img src="{{ graph_url }}" alt="Heart Disease Risk Graph">
+        <div class="probability">
+            <p><strong>{{ probability }}%</strong></p>
         </div>
-        <a href="/">Go Back</a>
+    </div>  
+
+    <div class="content-container">
+        <h3 id="name">Dear {{name}},</h3>
+        <h3>
+            Your risk for cardiovascular disease is higher, but there are many steps you can take to improve your health. Take action now to protect your heart!
+        </h3>
+
+        <p><strong id="tips">Tips:</strong></p>
+        <ul class="tips-list">
+            <li><strong>Stay Active:🏃‍♂️</strong> Aim for at least 30 minutes of moderate activity most days. Start with walking, stretching, or yoga. 🧘‍♂️</li>
+            <li><strong>Eat Healthy:🥗</strong> Increase your intake of vegetables, fruits, whole grains, and lean proteins. Reduce junk food, fried foods, and sugar. 🍎</li>
+            <li><strong>Manage Stress:🧘‍♀️</strong> Practice relaxation techniques like meditation, breathing exercises, or spending time outdoors. 🌳</li>
+            <li><strong>Regular Check-ups:🏥</strong> Monitor blood pressure, cholesterol, and sugar levels. Follow up with your doctor regularly. 🩺</li>
+            <li><strong>Avoid Smoking & Alcohol:🚭</strong> Quit smoking and limit alcohol consumption to improve heart health. ❤️</li>
+        </ul>
+
+        <div id="back">
+            <a href="/">Go Back</a>
+        </div>
     </div>
+
+    <h1 class="footer">Thank you for the assessment</h1>
 </body>
 </html>
