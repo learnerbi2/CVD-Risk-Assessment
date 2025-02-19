@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page with AI Chatbot</title>
+    <link rel="stylesheet" href="home.css" />
+    <style>
+      .chatbot-circle {
+        position: fixed;
+        bottom: 80px; /* Adjusted to move it above the video button */
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background: #ff6347; /* Light reddish color */
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .chatbot-modal {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        width: 350px;
+        height: 500px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .chatbot-header {
+        background: #ff4d4d; /* Improved reddish color */
+        color: white;
+        text-align: center;
+        padding: 12px;
+        font-size: 20px;
+        font-weight: bold;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      .chatbot-box {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        background: #f8f9fa;
+      }
+
+      .chatbot-input {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        background: white;
+      }
+
+      .chatbot-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+      }
+
+      .chatbot-input button {
+        margin-left: 10px;
+        padding: 10px;
+        border: none;
+        background: #ff4d4d;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .video-nav {
+        background: #ff4d4d;
+        color: white;
+        text-align: center;
+        padding: 15px 0; /* Adjusted padding to make the button span full width */
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+        cursor: pointer;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%; /* Full width of the screen */
+        border-radius: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Heart Disease Prediction</h1>
+      <p>Welcome to our Heart Disease Prediction website!</p>
+    </header>
+    <nav class="navbar">
+      <a href="{{ url_for('home') }}">Home</a>  <a href="{{ url_for('about') }}">About</a> 
+       <a href="{{ url_for('contact') }}">Contact</a> 
+        <a href="{{ url_for('registration') }}">Profile</a> 
+         <a href="{{ url_for('login') }}">Login</a>  
+         <a href="{{ url_for('predict') }}">Prediction</a> 
+         </nav>
+
+    <div class="chatbot-circle" onclick="toggleChatbot()">💬</div>
+    <div class="chatbot-modal" id="chatbot-modal">
+      <div class="chatbot-header">AI Chatbot</div>
+      <div class="chatbot-box" id="chatbot-box">
+        <p><b>Bot:</b> Hello! How can I assist you?</p>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <div class="video-nav" onclick="location.href='video.html'">Video</div>
+
+    <script>
+      function toggleChatbot() {
+        const chatbotModal = document.getElementById("chatbot-modal");
+        chatbotModal.style.display = chatbotModal.style.display === "flex" ? "none" : "flex";
+      }
+    </script>
+  </body>
+</html>

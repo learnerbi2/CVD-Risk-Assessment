@@ -1,122 +1,158 @@
+import os
 import pandas as pd
+
 import pickle
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request,redirect, url_for
 import io
 import base64
 import matplotlib
 import matplotlib.pyplot as plt
-import traceback
-import os
-
-# Fix GUI issue for servers
+# fix gui issue here
 matplotlib.use('Agg')
+
+try:
+    model_path = "Modifiedmodel.pkl"
+    scaler_path = "scaler.pkl"
+
+    if not os.path.exists(model_path) or not os.path.exists(scaler_path):
+        raise FileNotFoundError(" Model or Scaler file is missing!")
+
+    model = pickle.load(open(model_path, "rb"))
+    scaler = pickle.load(open(scaler_path, "rb"))
+
+except Exception as e:
+    print(f"Error loading model/scaler: {e}")
+    exit() 
+
+# Ensure correct column order
+feature_columns = [
+    'age', 'sex', 'smoking_status', 'exercise_frequency', 'alcohol_consumption', 'diet', 'high_blood_pressure',
+    'high_cholesterol', 'diabetes', 'heart_conditions', 'family_history_heart_disease', 'shortness_of_breath', 'palpitations'
+]
 
 app = Flask(__name__)
 
-# Load Model and Scaler with Better Handling
-model_path = "Modifiedmodel.pkl"
-scaler_path = "scaler.pkl"
-
-def load_pickle_file(file_path):
-    """Load pickle files safely."""
-    if not os.path.exists(file_path):
-        return None
-    try:
-        with open(file_path, "rb") as f:
-            return pickle.load(f)
-    except Exception as e:
-        print(f"❌ Error loading {file_path}: {e}")
-        return None
-
-model = load_pickle_file(model_path)
-scaler = load_pickle_file(scaler_path)
-
-if not model or not scaler:
-    print("❌ Model or Scaler is missing/corrupted! Ensure files exist.")
-    exit()  # Stop execution if critical files are missing
-
-# Feature Columns
-feature_columns = [
-    'age', 'sex', 'smoking_status', 'exercise_frequency', 'alcohol_consumption', 'diet',
-    'high_blood_pressure', 'high_cholesterol', 'diabetes', 'heart_conditions',
-    'family_history_heart_disease', 'shortness_of_breath', 'palpitations'
-]
-
 @app.route('/')
-def index():
-    return render_template('predictionpage.html')
+def home():
+    return render_template('home.html')
 
-def determine_risk_level(probability):
-    """Determine risk category and graph color based on probability."""
-    if probability > 70:
-        return "High Risk", "red", "high_risk.html"
-    elif 50 < probability <= 70:
-        return "Moderate Risk", "orange", "moderate_risk.html"
-    else:
-        return "Low Risk", "green", "low_risk.html"
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
-def generate_graph(probability, risk_level, graph_color):
-    """Generate and return the graph URL."""
-    try:
-        plt.figure(figsize=(5, 5))
-        plt.bar(["Heart Disease Risk"], [probability], color=graph_color)
-        plt.ylim([0, 100])
-        plt.ylabel('Risk Percentage')
-        plt.title('Heart Disease Prediction')
-        plt.text(0, -10, risk_level, ha='center', va='top', fontsize=15, fontweight='bold', color=graph_color)
-        plt.grid(True, linestyle="--", alpha=0.6)
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
-        # Convert to image and encode
-        img = io.BytesIO()
-        plt.savefig(img, format='png')
-        img.seek(0)
-        plt.close()
-        return "data:image/png;base64," + base64.b64encode(img.getvalue()).decode()
-    
-    except Exception as e:
-        print(f"Error generating graph: {e}")
-        return None
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    if request.method == 'POST':
+        # Handle registration logic here (e.g., store user data)
+        return redirect(url_for('login'))  # Redirect to login after successful registration
+    return render_template('registration.html')
 
-@app.route('/predict', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Handle login logic here (e.g., verify credentials)
+        return redirect(url_for('profile'))  # Redirect to profile after successful login
+    return render_template('login.html')
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    if request.method == 'POST':
+        # Handle feedback submission here
+        return render_template('feedback_submitted.html')  # Redirect to thank you page
+    return render_template('feedback.html')
+
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    try:
-        # Validate Input Fields
-        missing_fields = [col for col in feature_columns if col not in request.form]
-        if missing_fields:
-            return jsonify({"error": f"Missing form fields: {', '.join(missing_fields)}"}), 400
+    if request.method == 'POST':
+        try:
+            user_name = request.form['name']
+            user_data = {}
+            for col in feature_columns:
+                try:
+                    user_data[col] = int(request.form[col])
+                except ValueError:
+                    return f"Invalid input for {col}. Please enter a number.", 400
 
-        user_name = request.form.get('name', 'User')
+            user_df = pd.DataFrame([user_data], columns=feature_columns)
+            user_scaled = scaler.transform(user_df)
+            probability = model.predict_proba(user_scaled)[0][1] * 100
+            probability = round(probability, 2)
+            
+            if probability > 70:
+                graph_color='red'
+                risk_level = "High Risk"
+            elif 40 < probability <= 70:
+                graph_color= 'orange'
+                risk_level = "Moderate Risk"
+            else:
+                graph_color='green'
+                risk_level = "low Risk"
+                  # Generate the bar graph
+            plt.figure(figsize=(7,7))
+            plt.bar(["Heart Disease Risk"], [probability], color=graph_color)
+            plt.ylim([0, 100])
+            plt.ylabel('Risk Percentage')
+            plt.title('Heart Disease Prediction')
+            plt.text(0, -10, risk_level, 
+            ha='center', va='top', 
+            fontsize=15, fontweight='bold',
+            color=graph_color
+            ) 
 
-        # Parse and validate input values
-        user_data = {}
-        for col in feature_columns:
-            try:
-                user_data[col] = int(request.form[col])
-            except ValueError:
-                return jsonify({"error": f"Invalid input for {col}. Enter a valid number."}), 400
+           # Convert the plot to an image
+            img = io.BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            plt.close()
 
-        # Convert to DataFrame & Scale
-        user_df = pd.DataFrame([user_data], columns=feature_columns)
-        user_scaled = scaler.transform(user_df)
+            # Convert image to base64
+            graph_url = "data:image/png;base64," + base64.b64encode(img.getvalue()).decode()
 
-        # Predict Probability
-        probability = round(model.predict_proba(user_scaled)[0][1] * 100, 2)
 
-        # Determine Risk Level
-        risk_level, graph_color, template = determine_risk_level(probability)
+            if probability > 70:
+                return redirect( url_for('high_risk', name=user_name, probability=probability, graph_url=graph_url))
+            elif 40 < probability <= 70:
+                return redirect( url_for('moderate_risk', name=user_name, probability=probability, graph_url=graph_url))
+            else:
+                return redirect( url_for('low_risk', name=user_name, probability=probability, graph_url=graph_url))
 
-        # Generate Graph
-        graph_url = generate_graph(probability, risk_level, graph_color)
-        if not graph_url:
-            return jsonify({"error": "Failed to generate graph."}), 500
+        except KeyError as e:
+            return f"Missing form field: {e}", 400
+        except ValueError as e:  # Catch potential ValueError during int conversion
+            return f"Invalid input: {e}", 400
+        except Exception as e:
+            return f"An error occurred: {e}", 500
 
-        # Render Template
-        return render_template(template, name=user_name, probability=probability, graph_url=graph_url)
+    return render_template('predictionpage.html')  # Display the form on GET request
 
-    except Exception as e:
-        error_message = f"❌ Error: {str(e)}\n{traceback.format_exc()}"
-        print(error_message)
-        return jsonify({"error": str(e)}), 400
+@app.route('/high_risk')
+def high_risk():
+    name = request.args.get('name')
+    probability = request.args.get('probability')
+    graph_url = request.args.get('graph_url')
+    return render_template('high_risk.html', name=name, probability=probability, graph_url=graph_url)
+
+@app.route('/moderate_risk')
+def moderate_risk():
+    name = request.args.get('name')
+    probability = request.args.get('probability')
+    graph_url = request.args.get('graph_url')
+    return render_template('moderate_risk.html', name=name, probability=probability, graph_url=graph_url)
+
+@app.route('/low_risk')
+def low_risk():
+    name = request.args.get('name')
+    probability = request.args.get('probability')
+    graph_url = request.args.get('graph_url')
+    return render_template('low_risk.html', name=name, probability=probability, graph_url=graph_url)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #3498db, #8e44ad);
+        margin: 0;
+      }
+      .chat-container {
+        width: 400px;
+        height: 600px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .chat-header {
+        background: #007bff;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .chat-header img {
+        width: 50px;
+        height: 50px;
+      }
+      .chat-box {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        background: #f8f9fa;
+      }
+      .chat-box div {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+        padding: 10px 15px;
+        border-radius: 20px;
+        max-width: 75%;
+        font-size: 14px;
+      }
+      .user-message {
+        align-self: flex-end;
+        background: #007bff;
+        color: white;
+        display: flex;
+        flex-direction: row-reverse;
+      }
+      .bot-message {
+        align-self: flex-start;
+        background: #e9ecef;
+        display: flex;
+      }
+      .user-message img,
+      .bot-message img {
+        width: 30px;
+        height: 30px;
+        margin: 0 10px;
+        border-radius: 50%;
+      }
+      .thinking {
+        align-self: flex-start;
+        background: #e9ecef;
+        font-style: italic;
+        color: #888;
+        padding: 10px 15px;
+        border-radius: 20px;
+        max-width: 75%;
+        display: flex;
+      }
+      .dots {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 1em;
+        animation: dots 1.5s steps(3, end) infinite;
+      }
+      @keyframes dots {
+        0% {
+          width: 1em;
+        }
+        50% {
+          width: 2em;
+        }
+        100% {
+          width: 3em;
+        }
+      }
+      .input-box {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        background: #fff;
+      }
+      .input-box input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        font-size: 16px;
+      }
+      .input-box button {
+        padding: 12px 20px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 25px;
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .input-box button:hover {
+        background: #0056b3;
+        transform: scale(1.05);
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png"
+          alt="Chatbot Logo"
+        />
+        AI Chatbot
+      </div>
+      <div class="chat-box" id="chatBox"></div>
+      <div class="input-box">
+        <input type="text" id="userInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      function sendMessage() {
+        let userInput = document.getElementById("userInput").value.trim();
+        let chatBox = document.getElementById("chatBox");
+
+        if (userInput === "") return;
+
+        let randomUserImage = `https://randomuser.me/api/portraits/men/${Math.floor(
+          Math.random() * 100
+        )}.jpg`;
+
+        let userMessage = document.createElement("div");
+        userMessage.classList.add("user-message");
+        userMessage.innerHTML = <img src='${randomUserImage}' alt='User'>${userInput};
+
+        chatBox.appendChild(userMessage);
+        document.getElementById("userInput").value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        let thinkingMessage = document.createElement("div");
+        thinkingMessage.classList.add("thinking");
+        thinkingMessage.id = "thinking";
+        thinkingMessage.innerHTML =
+          "Bot is typing<span class='dots'>...</span>";
+
+        chatBox.appendChild(thinkingMessage);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        setTimeout(() =>{
+          document.getElementById("thinking").remove();
+          let botResponse = generateHealthcareResponse(userInput);
+
+          let botMessage = document.createElement("div");
+          botMessage.classList.add("bot-message");
+          botMessage.innerHTML = <img src='https://cdn-icons-png.flaticon.com/512/4712/4712035.png' alt='Bot'> ${botResponse};
+
+          chatBox.appendChild(botMessage);
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }, 1500);
+      }
+
+      function generateHealthcareResponse(userInput) {
+        userInput = userInput.toLowerCase();
+
+        let responses = {
+          hello: "Hello! How can I assist you today?",
+          hi: "Hi there! How can I help you?",
+          "good morning": "Good morning! Hope you have a great day!",
+          "good afternoon": "Good afternoon! How can I assist you today?",
+          "good evening": "Good evening! What can I do for you?",
+          "good night": "Good night! Take care and rest well!",
+          goodbye: "Goodbye! Have a wonderful day!",
+          bye: "Bye! Take care!",
+          "symptoms of flu":
+            "Common flu symptoms include fever, cough, sore throat, muscle aches, fatigue, and chills.",
+          "how to treat fever":
+            "To treat a fever, stay hydrated, rest, and take over-the-counter medications like ibuprofen or acetaminophen.",
+          "covid-19 symptoms":
+            "COVID-19 symptoms include fever, dry cough, loss of taste or smell, fatigue, and difficulty breathing.",
+          "healthy diet tips":
+            "Eat a balanced diet rich in fruits, vegetables, lean proteins, and whole grains. Avoid excessive sugar and processed foods.",
+          "mental health tips":
+            "Practice mindfulness, exercise regularly, maintain social connections, and seek professional help if needed.",
+          "first aid for burns":
+            "For minor burns, cool the area with running water for 10-15 minutes, cover with a clean cloth, and avoid popping blisters.",
+          "exercise benefits":
+            "Regular exercise helps improve heart health, boost mood, strengthen muscles, and enhance overall well-being.",
+          "emergency contact":
+            "For any medical emergency, call your local emergency number or visit the nearest hospital immediately.",
+        };
+
+        return (
+          responses[userInput] ||
+          "I'm not sure about that. Please consult a healthcare professional for accurate information."
+        );
+      }
+      document
+        .getElementById("userInput")
+        .addEventListener("keypress", function (event) {
+          if(event.key === "Enter") {
+            sendMessage();
+         }});
+    </script>
+  </body>
+</html>
