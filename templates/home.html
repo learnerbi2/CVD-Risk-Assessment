@@ -7,95 +7,216 @@
     <title>Home Page with AI Chatbot</title>
     <link rel="stylesheet" href="home.css" />
     <style>
-      .chatbot-circle {
-        position: fixed;
-        bottom: 80px; /* Adjusted to move it above the video button */
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        background: #ff6347; /* Light reddish color */
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 24px;
-        cursor: pointer;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      }
-
-      .chatbot-modal {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        width: 350px;
-        height: 500px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        display: none;
-        flex-direction: column;
-        overflow: hidden;
-      }
-
-      .chatbot-header {
-        background: #ff4d4d; /* Improved reddish color */
-        color: white;
-        text-align: center;
-        padding: 12px;
-        font-size: 20px;
-        font-weight: bold;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-      }
-
-      .chatbot-box {
-        flex: 1;
-        padding: 10px;
-        overflow-y: auto;
-        background: #f8f9fa;
-      }
-
-      .chatbot-input {
-        display: flex;
-        padding: 10px;
-        border-top: 1px solid #ddd;
-        background: white;
-      }
-
-      .chatbot-input input {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        outline: none;
-      }
-
-      .chatbot-input button {
-        margin-left: 10px;
-        padding: 10px;
-        border: none;
-        background: #ff4d4d;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-
-      .video-nav {
-        background: #ff4d4d;
-        color: white;
-        text-align: center;
-        padding: 15px 0; /* Adjusted padding to make the button span full width */
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 20px;
-        cursor: pointer;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%; /* Full width of the screen */
-        border-radius: 0;
-      }
+ /* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  /* Header with Gradient Background */
+  header {
+    background: linear-gradient(135deg, #E94560, #F77F6A);
+    padding: 30px 0;
+    text-align: center;
+  }
+  
+  .header-content h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #fff;
+  }
+  
+  .header-content p {
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 10px 0 0;
+  }
+  
+  /* Navigation Bar */
+  .navbar {
+    background-color: #E94560;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .navbar a {
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .navbar a:hover {
+    background-color: #F77F6A;
+  }
+  
+  /* Two-Column Layout */
+  .container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  /* Left Column */
+  .left-content {
+    width: 60%;
+    padding-right: 20px;
+  }
+  
+  /* Video Container */
+  .video-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .video-container video {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Right Column: Image */
+  .right-content {
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-container {
+    text-align: center;
+  }
+  
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Chatbot Button */
+  .chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #E94560;
+    color: white;
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .chatbot-button:hover {
+    background-color: #F77F6A;
+  }
+  
+  /* Chatbot Modal - Updated to Appear Higher */
+  .chatbot-modal {
+    display: none;
+    position: fixed;
+    right: 20px;
+    bottom: 200px;  /* Increased from 100px to 200px */
+    background-color: #FFF1F1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    height: 400px;
+    z-index: 9999;
+  }
+  
+  .right-chatbot h3 {
+    color: #E94560;
+    margin-bottom: 20px;
+  }
+  
+  .chatbot-box {
+    width: 100%;
+    height: 200px;
+    background-color: #FDE2E2;
+    border: 1px solid #E94560;
+    border-radius: 5px;
+    padding: 10px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  
+  .input-box {
+    width: 70%;
+    padding: 8px;
+    margin-right: 5px;
+    border: 1px solid #E94560;
+    border-radius: 5px;
+    background-color: #FFF1F1;
+  }
+  
+  button {
+    padding: 8px 12px;
+    background-color: #E94560;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #F77F6A;
+  }
+  
+  /* Bottom Footer Strip for Fullscreen Video Option */
+  .video-footer {
+    background-color: #F77F6A;
+    padding: 40px 0;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Optional: ensures it's above other elements */
+  }
+  
+  .video-footer .fullscreen-video-btn {
+    color: #fff;
+    background-color: #E94560;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .video-footer .fullscreen-video-btn:hover {
+    background-color: #D13D52;
+  }
+  /* Chatbot Address */
+.chatbot-address {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chatbot-address strong {
+    font-weight: bold;
+  }
     </style>
   </head>
   <body>
